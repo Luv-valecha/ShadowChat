@@ -9,6 +9,9 @@ const app = express();
 
 const port = process.env.PORT || 5001;
 
+// to enable the fetching of the data from json file eg. in auth controller
+app.use(express.json())
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
