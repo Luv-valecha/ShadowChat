@@ -13,12 +13,12 @@ export const signup = async (req,res)=>{
         }
         // check for the min password length
         if(password.length < 6) {
-            return res.status(400).json({message : "Passwoed can't be less than 6 characthers"});
+            return res.status(400).json({message : "Password can't be less than 6 characthers"});
         }
         
         // check for the Email ID it it exist already or not
         const user = await User.findOne({email});
-        if(user) res.status(400).json({message : "User already exit with this email ID"});
+        if(user) res.status(400).json({message : "User already exists with this email ID"});
 
         // Generate password Hash using bcrypt
         const salt = await bcrypt.genSalt(10);
@@ -33,12 +33,12 @@ export const signup = async (req,res)=>{
         });
         
 
-        // validiate the newuser
+        // validate the newuser
         if(newUser){
             generateToken(newUser._id,res);
             await newUser.save();
 
-            // add this newUser to the responce
+            // add this newUser to the response
             res.status(201).json({
                 _id : newUser._id,
                 fullName : newUser.fullName,
@@ -52,10 +52,9 @@ export const signup = async (req,res)=>{
         else{
             res.status(400).json({message : "Invalid user data"});
         }
-        //  
 
     } catch (error) {
-        console.log("error in sinup controller :",error);
+        console.log("error in signup controller :",error);
     }
 }
 
