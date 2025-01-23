@@ -7,7 +7,6 @@ import { generateToken } from "../lib/utils.js";
 export const signup = async (req,res)=>{
     const {fullname , email,password} = req.body;
     try {
-
         if(!fullname || !email || !password) {
             return res.status(400).json({message : "Fill all the fields"});
         }
@@ -15,16 +14,13 @@ export const signup = async (req,res)=>{
         if(password.length < 6) {
             return res.status(400).json({message : "Password can't be less than 6 characthers"});
         }
-        
         // check for the Email ID it it exist already or not
         const user = await User.findOne({email});
-        if(user) res.status(400).json({message : "User already exists with this email ID"});
-
+        if(user) return res.status(400).json({message : "User already exists with this email ID"});
         // Generate password Hash using bcrypt
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
         
-
         // new User object
         const newUser = new User({
             fullName : fullname,
