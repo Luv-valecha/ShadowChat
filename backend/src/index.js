@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 app.use("/api/auth", authRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.listen(port, () => {
     console.log(`Server is up and running at http://localhost:${port}`);

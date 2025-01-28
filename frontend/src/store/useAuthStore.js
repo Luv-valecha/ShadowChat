@@ -9,6 +9,7 @@ export const useAuthStore= create((set)=>({
     isLoggingIng:false,
     isUpdatingProfile:false,
     isCheckingAuth:true,
+    onlineUsers:[],
 
     // to check if user is authenticated---- called every time user refreshes
     checkAuth: async()=>{
