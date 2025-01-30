@@ -6,7 +6,7 @@ import { generateToken } from "../lib/utils.js";
 import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req,res)=>{
-    const {fullName , email, password} = req.body;
+    const {fullName , email,password} = req.body;
     try {
         if(!fullName || !email || !password) {
             return res.status(400).json({message : "Fill all the fields"});
@@ -17,12 +17,13 @@ export const signup = async (req,res)=>{
         }
         // check for the Email ID it it exist already or not
         const user = await User.findOne({email});
-        if(user) return res.status(400).json({message : "User already exists with this email ID"});
+        if(user){
+            return res.status(400).json({message : "User already exists with this email ID"});
+        }
 
         // Generate password Hash using bcrypt
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
-        
         // new User object
         const newUser = new User({
             fullName : fullName,
