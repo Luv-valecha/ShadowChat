@@ -6,9 +6,9 @@ import { generateToken } from "../lib/utils.js";
 import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req,res)=>{
-    const {fullname , email,password} = req.body;
+    const {fullName , email, password} = req.body;
     try {
-        if(!fullname || !email || !password) {
+        if(!fullName || !email || !password) {
             return res.status(400).json({message : "Fill all the fields"});
         }
         // check for the min password length
@@ -25,7 +25,7 @@ export const signup = async (req,res)=>{
         
         // new User object
         const newUser = new User({
-            fullName : fullname,
+            fullName : fullName,
             email : email,
             password:hashedPassword,
         });
