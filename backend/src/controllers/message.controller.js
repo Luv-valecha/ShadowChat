@@ -1,12 +1,12 @@
 import User from "../models/user.model.js"
 import Message from "../models/message.model.js";
+import cloudinary from "../lib/cloudinary.js"
 
 export const getUsersForSidebar= async (req,res)=>{
     try {
         const loggedinuserId=req.user._id; 
-
         //list every user except the current user and return their details except their password
-        const userlist= await User.find({id:{$ne: loggedinuserId}}).select("-password");
+        const userlist= await User.find({_id:{$ne: loggedinuserId}}).select("-password");
 
         res.status(200).json(userlist);
     } catch (error) {
@@ -29,6 +29,7 @@ export const getMessages= async(req,res)=>{
 
         res.status(200).json(messages);
     } catch (error) {
+        console.log("test3");
         console.error("Error in getMessages: ",error);
         res.status(500).json({error: "Internal Server Error"});
     }
