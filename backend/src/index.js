@@ -5,10 +5,9 @@ import messageRoutes from "./routes/message.route.js";
 import { connectdb } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { app, server } from "./lib/socket.js";
 
 dotenv.config();
-
-const app = express();
 
 const port = process.env.PORT || 5001;
 
@@ -16,7 +15,7 @@ const port = process.env.PORT || 5001;
 app.use(express.json())
 app.use(cookieParser());
 app.use(cors({
-    origin:["http://localhost:5173", "http://localhost:5174"],
+    origin: "http://localhost:5173",
     credentials:true,
 }))
 
@@ -26,7 +25,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is up and running at http://localhost:${port}`);
     connectdb();
 });

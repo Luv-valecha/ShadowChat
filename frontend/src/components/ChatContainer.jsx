@@ -1,25 +1,31 @@
-import React, { useEffect,useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import ChatHeader from './ChatHeader';
 import MessageInput from './MessageInput';
 import MessageSkeleton from './skeletons/MessageSkeleton';
-import {formatMessageTime} from "../lib/utils.js"
+import { formatMessageTime } from "../lib/utils.js"
 
 const ChatContainer = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser } = useChatStore();
-  const { authUser } = useAuthStore();
-  const ChatContainerRef=useRef(null);
+  const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
+  const { authUser, socket } = useAuthStore();
+  const ChatContainerRef = useRef(null);
+  const lastMessageRef = useRef(null);
 
   useEffect(() => {
-    getMessages(selectedUser._id)
-  }, [selectedUser._id, getMessages]);
+    getMessages(selectedUser._id);
 
-  useEffect(()=>{
-    if (ChatContainerRef.current) {
-      ChatContainerRef.current.scrollTop = ChatContainerRef.current.scrollHeight;
+    subscribeToMessages(socket);
+
+    return () => unsubscribeFromMessages(socket);
+  }, [selectedUser._id]);
+
+  useEffect(() => {
+    // Scroll to the last message when messages change
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  },[messages]);
+  }, [messages]);
 
   if (isMessagesLoading) {
     return (
@@ -35,8 +41,9 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div ref={ChatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div key={message._id}
+            ref={index === messages.length - 1 ? lastMessageRef : null}
             className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}>
             <div className="chat-image avatar">
               <div className="size-10 rounded-full border">
