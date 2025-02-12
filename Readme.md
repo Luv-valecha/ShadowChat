@@ -1,6 +1,6 @@
 # ShadowChat
 
-ShadowChat is a real-time chat application designed for secure and seamless communication. Built using modern web technologies, it provides an intuitive user experience with end-to-end encryption.
+ShadowChat is a real-time MERN Stack chat application designed for secure and seamless communication. Built using modern web technologies, it provides an intuitive user experience.
 
 ## Features
 
@@ -13,7 +13,7 @@ ShadowChat is a real-time chat application designed for secure and seamless comm
 
 ## Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS
+- **Frontend:** React.js, Tailwind CSS, Daisy UI
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 - **Real-time Communication:** Socket.io
@@ -61,7 +61,7 @@ ShadowChat is a real-time chat application designed for secure and seamless comm
 
 1. Sign up or log in to your account.
 2. Start a conversation with friends.
-3. Enjoy real-time chat with instant notifications!
+3. Enjoy real-time chat!
 
 ## Deployment
 
