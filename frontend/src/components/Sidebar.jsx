@@ -14,8 +14,8 @@ const Sidebar = () => {
   const [showJoinModal, setShowJoinModal] = useState(false);
 
   const filteredUsers = showOnlineOnly
-    ? users.filter((user) => onlineUsers.includes(user._id))
-    : users;
+    ? users.filter((user) => onlineUsers.includes(user._id) && user.role==="user")
+    : users.filter((user) => user.role==="user");
 
   // get all users to list at the sidebar
   useEffect(() => {
