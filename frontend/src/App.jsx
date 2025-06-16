@@ -11,6 +11,9 @@ import { useEffect } from 'react'
 import {Loader} from "lucide-react"
 import {Toaster} from "react-hot-toast"
 import { useThemeStore } from './store/useThemeStore.js'
+import AdminPage from './pages/AdminPage.jsx'
+import CodeRoom from './components/CodeRoom.jsx'
+
 function App() {
   const {authUser,checkAuth,isCheckingAuth}= useAuthStore();
   const {theme} = useThemeStore();
@@ -19,7 +22,7 @@ function App() {
     checkAuth();
   },[]);
 
-  console.log({authUser});
+  // console.log({authUser});
 
   // diaplaying Loader while authenticating the user
   if(isCheckingAuth && authUser){
@@ -34,11 +37,12 @@ function App() {
       <Navbar/>
 
       <Routes>
-        <Route path='/' element={authUser ? <HomePage/> : <Navigate to="/login" />} />
+        <Route path='/' element={authUser ? (authUser.role==="user" ? <HomePage/> : <AdminPage/>) : <Navigate to="/login" />} />
         <Route path='/login' element={ !authUser ? <LoginPage/>  : < Navigate to="/" />} />
         <Route path='/profile' element={authUser ? <ProfilePage/> : <Navigate to="/login" />} />
         <Route path='/settings' element={<SettingsPage/>} />
         <Route path='/signup' element={!authUser ? <SignUpPage/> : < Navigate to="/" />} />
+        <Route path='/editor/:roomId' element={authUser ? <CodeRoom/> : <Navigate to="/login" />} />
       </Routes>
       <Toaster/>
     </div>
