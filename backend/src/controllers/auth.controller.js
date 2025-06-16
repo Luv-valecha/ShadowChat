@@ -43,6 +43,7 @@ export const signup = async (req,res)=>{
                 fullName : newUser.fullName,
                 email : newUser.email,
                 profilePic : newUser.profilePic,
+                role: newUser.role,
             });
 
             console.log("new user created with Email : ",email)
@@ -85,7 +86,8 @@ export const login=async (req,res)=>{
             _id : user._id,
             fullName : user.fullName,
             email : user.email,
-            profilePic : user.profilePic,    
+            profilePic : user.profilePic,   
+            role: user.role, 
         })
         // res.status(200).json({
         //     message: "Login successful",
