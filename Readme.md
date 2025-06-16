@@ -5,11 +5,11 @@ ShadowChat is a real-time MERN Stack chat application designed for secure and se
 ## Features
 
 - 🟢 **Real-time Messaging** - Chat with users instantly.
-- 🔒 **End-to-End Encryption** - Ensures privacy and security.
 - 🎨 **User-Friendly Interface** - Minimalistic and easy to navigate.
-- 📂 **Media Support** - Send and receive images, videos, and documents.
+- 📂 **Media Support** - Send and receive images.
 - 🌍 **Online Status** - See when users are active.
-- 🔔 **Notifications** - Get alerts for new messages.
+- 🔐 **Role Based Access** - Admins have access to daily stats.
+- 👥 **Collaborative Code Rooms** - Code rooms which different users can join and code together in real-time.
 
 ## Tech Stack
 
@@ -66,6 +66,10 @@ ShadowChat is a real-time MERN Stack chat application designed for secure and se
 ## Deployment
 
 The application is deployed on [Render](https://shadowchat-iupa.onrender.com/).
+
+## Documentation
+
+The Project Report is uploaded in the github: [Project_Report](https://github.com/Luv-valecha/ShadowChat/blob/main/ShadowChat_Project_Report.pdf)
 
 ## Contributing
 
