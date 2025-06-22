@@ -28,8 +28,8 @@ const ChatContainer = () => {
   }, [messages, smartReplies]);
 
   useEffect(() => {
+    clearSmartReplies();
     if (messages.length > 0) {
-      clearSmartReplies();
       const lastMessage = messages[messages.length - 1];
 
       if (lastMessage.senderId !== authUser._id) {
