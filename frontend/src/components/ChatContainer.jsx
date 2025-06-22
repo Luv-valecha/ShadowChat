@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import ChatHeader from './ChatHeader';
@@ -7,7 +7,7 @@ import MessageSkeleton from './skeletons/MessageSkeleton';
 import { formatMessageTime } from "../lib/utils.js"
 
 const ChatContainer = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
+  const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages, smartReplies, getSmartReplies, clearSmartReplies } = useChatStore();
   const { authUser, socket } = useAuthStore();
   const ChatContainerRef = useRef(null);
   const lastMessageRef = useRef(null);
@@ -25,7 +25,19 @@ const ChatContainer = () => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, smartReplies]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      clearSmartReplies();
+      const lastMessage = messages[messages.length - 1];
+
+      if (lastMessage.senderId !== authUser._id) {
+        const lastMessageText = lastMessage.text;
+        if (lastMessageText.length > 0) getSmartReplies(lastMessageText);
+      }
+    }
+  }, [messages])
 
   if (isMessagesLoading) {
     return (

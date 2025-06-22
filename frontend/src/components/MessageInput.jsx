@@ -8,7 +8,7 @@ const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessage } = useChatStore();
+  const { sendMessage, smartReplies } = useChatStore();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -60,8 +60,28 @@ const MessageInput = () => {
     }
   };
 
+  const handlesmartRepliesClick = (reply) => {
+    setText(reply);
+  }
+  // console.log(`Smart replies: ${smartReplies}`);
+
   return (
     <div className="p-4 w-full">
+      {
+        Array.isArray(smartReplies) && smartReplies.length > 0 && (
+          <div className="px-1 pb-2 flex flex-wrap gap-2">
+            {smartReplies.map((reply, index) => (
+              <button
+                key={index}
+                onClick={() => handlesmartRepliesClick(reply)}
+                className="px-3 py-1 rounded-full text-white backdrop-blur-md bg-white/10 border border-cyan-400 shadow-sm hover:shadow-cyan-400/60 hover:shadow-md transition duration-300"
+              >
+                {reply}
+              </button>
+            ))}
+          </div>
+        )
+      }
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
