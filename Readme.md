@@ -1,10 +1,11 @@
 # ShadowChat
 
-ShadowChat is a real-time MERN Stack chat application designed for secure and seamless communication. Built using modern web technologies, it provides an intuitive user experience.
+ShadowChat is a real-time MERN Stack chat application designed for secure and seamless communication. Built using modern web technologies, it provides an intuitive user experience with collaborative code rooms and AI generated smart replies.
 
 ## Features
 
 - 🟢 **Real-time Messaging** - Chat with users instantly.
+- 🤖 **Smart Replies (powered by Google Gemini)** – Suggests smart responses to keep conversations flowing smoothly.
 - 🎨 **User-Friendly Interface** - Minimalistic and easy to navigate.
 - 📂 **Media Support** - Send and receive images.
 - 🌍 **Online Status** - See when users are active.
@@ -16,7 +17,7 @@ ShadowChat is a real-time MERN Stack chat application designed for secure and se
 - **Frontend:** React.js, Tailwind CSS, Daisy UI
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
-- **Real-time Communication:** Socket.io
+- **Real-time Communication and Code Rooms:** Socket.io
 - **Deployment:** Render
 
 ## Installation
