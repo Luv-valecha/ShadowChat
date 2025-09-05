@@ -2,6 +2,7 @@ import User from "../models/user.model.js"
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js"
 import { getReceiverSocketId, io } from "../lib/socket.js";
+import redisClient from "../lib/redisClient.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,19 +24,57 @@ export const getUsersForSidebar = async (req, res) => {
 
 export const getMessages = async (req, res) => {
     try {
+        // --------------------------------------
+        // console.log("Got a get req");
+        // --------------------------------------
         const { id: usertoChatid } = req.params;
-        const myid = req.user._id;
+        const { before, limit = 50 } = req.query;
 
-        const messages = await Message.find({
-            $or: [
-                { senderId: myid, receiverId: usertoChatid },
-                { senderId: usertoChatid, receiverId: myid },
-            ],
-        });
+        const myid = req.user._id;
+        const cacheKey = `chat:${[myid, usertoChatid].sort().join(':')}`;
+
+        const cached = await redisClient.lRange(cacheKey, 0, -1);
+        const oldestCachedMessage = cached.length ? JSON.parse(cached[0]) : null;
+        let messages = [];
+
+        if ((cached.length) && (!before || new Date(before) > new Date(oldestCachedMessage?.createdAt))) {
+            // --------------------------------------
+            // console.log("Messages fetched from redis");
+            // --------------------------------------
+            messages = cached
+                .map(JSON.parse)
+                .filter(msg => !before || new Date(msg.createdAt) < new Date(before))
+                .slice(-Number(limit));
+        }
+        else {
+            // --------------------------------------
+            // console.log("Messages fetched from db");
+            // --------------------------------------
+            const query = {
+                $or: [
+                    { senderId: myid, receiverId: usertoChatid },
+                    { senderId: usertoChatid, receiverId: myid },
+                ],
+            };
+            if (before) {
+                query.createdAt = { $lt: new Date(before) };
+            }
+            messages = await Message.find(query).limit(limit);
+        }
+
+        if (!cached.length) {
+            // --------------------------------------
+            // console.log("Messages stored in redis");
+            // --------------------------------------
+            const pipeline = redisClient.multi();
+            messages.forEach(msg => pipeline.rPush(cacheKey, JSON.stringify(msg)));
+            pipeline.lTrim(cacheKey, -limit, -1);
+            await pipeline.exec();
+        }
 
         res.status(200).json(messages);
     } catch (error) {
-        console.log("test3");
+        // console.log("test3");
         console.error("Error in getMessages: ", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
@@ -60,6 +99,11 @@ export const sendMessage = async (req, res) => {
             image: imageURL,
         });
         await newMessage.save();
+
+        const chatKey = `chat:${[senderId, receiverId].sort().join(':')}`;
+        await redisClient.rPush(chatKey, JSON.stringify(newMessage));
+
+        await redisClient.lTrim(chatKey, -50, -1);
 
         const receiverSocketId = getReceiverSocketId(receiverId);
         if (receiverSocketId) {

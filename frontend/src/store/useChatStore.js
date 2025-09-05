@@ -10,6 +10,7 @@ export const useChatStore = create((set, get) => ({
     isUsersLoading: false,
     isMessagesLoading: false,
     smartReplies: [],
+    fetchedFromDB: false,
 
     getUsers: async () => {
         set({ isUsersLoading: true });
@@ -26,10 +27,22 @@ export const useChatStore = create((set, get) => ({
     getMessages: async (userId) => {
         set({ isMessagesLoading: true });
         try {
-            const res = await axiosInstance.get(`/messages/${userId}`);
-            set({ messages: res.data });
+            const { messages} = get();
+            // console.log(`resetted first: ${resetFirst}`);
+            // if(resetFirst) set({messages:[]});
+            const params = {
+                before: messages.length ? messages[0].createdAt : null,
+                limit: 50
+            };
+            // ---------------------
+            // console.log(`Sending axios get req`);
+            // console.log("Request URL:", axiosInstance.getUri({ url: `/messages/${userId}`, params }));
+            // --------------------------------------
+            const res = await axiosInstance.get(`/messages/${userId}`, { params });
+            if(messages.length) set({fetchedFromDB: true});
+            set({ messages: [...res.data, ...messages] });
         } catch (error) {
-            toast.error(error.response);
+            toast.error(error.response?.data?.error || error.message);
         } finally {
             set({ isMessagesLoading: false });
         }
@@ -68,13 +81,13 @@ export const useChatStore = create((set, get) => ({
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 
     getSmartReplies: async (last_text) => {
-        set({smartReplies: []});
-        const res= await axiosInstance.post("/messages/smart_reply", { last_message: last_text });
+        set({ smartReplies: [] });
+        const res = await axiosInstance.post("/messages/smart_reply", { last_message: last_text });
         const replies = res.data.smartReplies;
         set({ smartReplies: replies });
     },
 
-    clearSmartReplies: ()=>{
-        set({smartReplies: []});
+    clearSmartReplies: () => {
+        set({ smartReplies: [] });
     },
 }))

@@ -7,12 +7,16 @@ import MessageSkeleton from './skeletons/MessageSkeleton';
 import { formatMessageTime } from "../lib/utils.js"
 
 const ChatContainer = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages, smartReplies, getSmartReplies, clearSmartReplies } = useChatStore();
+  const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages, smartReplies, getSmartReplies, clearSmartReplies, fetchedFromDB } = useChatStore();
   const { authUser, socket } = useAuthStore();
   const ChatContainerRef = useRef(null);
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
+    useChatStore.setState({ messages: [], fetchedFromDB: false });
+    // --------------------------------------
+    // console.log("Sending first get req");
+    // --------------------------------------
     getMessages(selectedUser._id);
 
     subscribeToMessages(socket);
@@ -21,11 +25,11 @@ const ChatContainer = () => {
   }, [selectedUser._id]);
 
   useEffect(() => {
-    // Scroll to the last message when messages change
-    if (lastMessageRef.current) {
+    if (!fetchedFromDB && lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      useChatStore.setState({ fetchedFromDB: false });
     }
-  }, [messages, smartReplies]);
+  }, [messages, smartReplies, fetchedFromDB]);
 
   useEffect(() => {
     clearSmartReplies();
@@ -38,6 +42,25 @@ const ChatContainer = () => {
       }
     }
   }, [messages])
+
+  useEffect(() => {
+    const container = ChatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      if (container.scrollTop === 0 && messages.length > 0) {
+        // const oldestMessageTime = messages[0].createdAt;
+        // --------------------------------------
+        // console.log("Sending more get reqs");
+        // --------------------------------------
+        getMessages(selectedUser._id);
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [messages, selectedUser]);
+
 
   if (isMessagesLoading) {
     return (
