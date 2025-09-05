@@ -39,7 +39,7 @@ export const getMessages = async (req, res) => {
 
         if ((cached.length) && (!before || new Date(before) > new Date(oldestCachedMessage?.createdAt))) {
             // --------------------------------------
-            // console.log("Messages fetched from redis");
+            console.log("Messages fetched from redis");
             // --------------------------------------
             messages = cached
                 .map(JSON.parse)
@@ -48,7 +48,7 @@ export const getMessages = async (req, res) => {
         }
         else {
             // --------------------------------------
-            // console.log("Messages fetched from db");
+            console.log("Messages fetched from db");
             // --------------------------------------
             const query = {
                 $or: [
@@ -69,6 +69,7 @@ export const getMessages = async (req, res) => {
             const pipeline = redisClient.multi();
             messages.forEach(msg => pipeline.rPush(cacheKey, JSON.stringify(msg)));
             pipeline.lTrim(cacheKey, -limit, -1);
+            pipeline.expire(cacheKey, 3600);
             await pipeline.exec();
         }
 
@@ -104,6 +105,7 @@ export const sendMessage = async (req, res) => {
         await redisClient.rPush(chatKey, JSON.stringify(newMessage));
 
         await redisClient.lTrim(chatKey, -50, -1);
+        await redisClient.expire(chatKey, 3600);
 
         const receiverSocketId = getReceiverSocketId(receiverId);
         if (receiverSocketId) {
