@@ -4,12 +4,20 @@ import { useAuthStore } from '../store/useAuthStore.js';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
+    const [expandedEmails, setExpandedEmails] = useState({});
     const { authUser } = useAuthStore();
 
     useEffect(() => {
         axiosInstance.get('/admin/allusers')
             .then(res => setUsers(res.data));
     }, []);
+
+    const toggleEmail = (id) => {
+        setExpandedEmails(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
 
     const DeleteUser = (e) => {
         const userId = e.target.closest('tr').getAttribute('data-user-id');
@@ -50,6 +58,7 @@ const UserList = () => {
                             <th className="p-2">Email</th>
                             <th className="p-2">Role</th>
                             <th className="p-2">Joined</th>
+                            <th className="p-2">Deleted</th>
                             <th className="p-2">Actions</th>
                         </tr>
                     </thead>
@@ -57,9 +66,24 @@ const UserList = () => {
                         {users.map(u => (
                             <tr key={u._id} data-user-id={u._id} className="border-t text-white">
                                 <td className="p-2">{u.fullName}</td>
-                                <td className="p-2">{u.email}</td>
+
+                                <td
+                                    className="p-2 cursor-pointer hover:underline"
+                                    onClick={() => toggleEmail(u._id)}
+                                >
+                                    {expandedEmails[u._id]
+                                        ? u.email
+                                        : u.email.length > 18
+                                            ? u.email.slice(0, 18) + "..."
+                                            : u.email
+                                    }
+                                </td>
+
                                 <td className="p-2">{u.role}</td>
                                 <td className="p-2">{new Date(u.createdAt).toLocaleDateString()}</td>
+                                <td className="p-2">
+                                    {u.deletedAt ? new Date(u.deletedAt).toLocaleDateString() : "Not deleted"}
+                                </td>
                                 <td className="p-2">
                                     <div className="inline-flex gap-1">
                                         <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" onClick={DeleteUser}>Delete</button>

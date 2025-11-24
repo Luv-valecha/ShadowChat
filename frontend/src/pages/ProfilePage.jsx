@@ -4,7 +4,7 @@ import { Camera, Mail, User } from "lucide-react";
 import Resizer from "react-image-file-resizer";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+  const { authUser, isUpdatingProfile, updateProfile, deleteUser } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
 
   const handleImageUpload = async (e) => {
@@ -34,7 +34,7 @@ const ProfilePage = () => {
       "base64"
     );
     // function that'll be called to update the profile pic to the database
-    
+
     // };
   };
 
@@ -97,6 +97,12 @@ const ProfilePage = () => {
               <div className="flex items-center justify-between py-2">
                 <span>Account Status</span>
                 <span className="text-green-500">Active</span>
+              </div>
+              <div className="flex justify-end">
+                <button 
+                className="border border-amber-100 p-2 cursor-pointer bg-red-700 text-black font-medium"
+                onClick={deleteUser}
+                >Delete Profile</button>
               </div>
             </div>
           </div>
