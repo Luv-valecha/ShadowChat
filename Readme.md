@@ -86,4 +86,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For any issues or suggestions, feel free to contact [Luv Valecha](https://github.com/Luv-valecha) or [Dheeraj Kumar](https://github.com/dheeraj-6904).
+For any issues or suggestions, feel free to contact [Luv Valecha](https://github.com/Luv-valecha), [Dheeraj Kumar](https://github.com/dheeraj-6904) or [Arafat Ahmad Sheikh](https://github.com/Arafat-Ahmad-Sheikh).
