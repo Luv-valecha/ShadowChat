@@ -17,6 +17,7 @@ ShadowChat is a real-time MERN Stack chat application designed for secure and se
 - **Frontend:** React.js, Tailwind CSS, Daisy UI
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
+- **Caching:** Redis
 - **Real-time Communication and Code Rooms:** Socket.io
 - **Deployment:** Render
 
