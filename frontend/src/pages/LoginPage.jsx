@@ -3,19 +3,25 @@ import { useAuthStore } from '../store/useAuthStore';
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
-  const [showPassword,setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email : "",
+    email: "",
     password: "",
   });
-  const {login,isLoggingIn} = useAuthStore();
+  const { login, isLoggingIn } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(formData)
   }
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+  };
+
   return (
     <div className="h-screen grid lg:grid-cols-2">
       {/* Left Side - Form */}
@@ -96,14 +102,23 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="text-center">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="btn btn-outline w-full flex items-center justify-center gap-3"
+          >
+            <FcGoogle className="w-5 h-5" />
+            Continue with Google
+          </button>
+
+          {/* <div className="text-center">
             <p className="text-base-content/60">
               Don&apos;t have an account?{" "}
               <Link to="/signup" className="link link-primary">
                 Create account
               </Link>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
 
