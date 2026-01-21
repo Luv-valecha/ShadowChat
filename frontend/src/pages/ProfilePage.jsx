@@ -82,12 +82,10 @@ const ProfilePage = () => {
               {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
             </p>
           </div>
-          {/* ---- */}
-          {/* User Info */}
-
-          {/* ---- */}
-          {/* Additional Info Field */}
-          <div className="mt-6 bg-base-300 rounded-xl p-6">
+          <div className="text-center text-2xl font-bold -my-2">
+            {authUser.fullName}
+          </div>
+          <div className="bg-base-300 rounded-xl p-6">
             <h2 className="text-lg font-medium  mb-4">Account Information</h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-zinc-700">
@@ -100,7 +98,7 @@ const ProfilePage = () => {
               </div>
               <div className="flex justify-end">
                 <button 
-                className="border border-amber-100 p-2 cursor-pointer bg-red-700 text-black font-medium"
+                className="border border-amber-100 p-2 cursor-pointer bg-red-700 text-black font-medium rounded-sm"
                 onClick={deleteUser}
                 >Delete Profile</button>
               </div>
