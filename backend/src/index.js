@@ -6,6 +6,7 @@ import adminRoutes from "./routes/admin.route.js";
 import { connectdb } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import passport from "./lib/passport.js";
 import { app, server } from "./lib/socket.js";
 
 import path from "path";
@@ -22,6 +23,7 @@ app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
 }))
+app.use(passport.initialize());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);

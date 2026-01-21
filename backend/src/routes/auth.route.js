@@ -1,16 +1,33 @@
 import express from "express";
-import { signup, login, logout, updateProfile, checkAuth, deleteProfile } from "../controllers/auth.controller.js";
+import { signup, login, logout, updateProfile, checkAuth, deleteProfile, googleAuth } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
+import passport from "../lib/passport.js";
 
-const router=express.Router();
+const router = express.Router();
 
-router.post("/signup",signup);
+router.get(
+    "/google",
+    passport.authenticate("google", {
+        scope: ["profile", "email"],
+    })
+);
 
-router.post("/login",login);
+router.get(
+    "/google/callback",
+    passport.authenticate("google", {
+        session: false,
+        failureRedirect: "/login",
+    }),
+    googleAuth
+);
 
-router.post("/logout",logout);
+router.post("/signup", signup);
 
-router.delete("/delete",protectRoute,deleteProfile);
+router.post("/login", login);
+
+router.post("/logout", logout);
+
+router.delete("/delete", protectRoute, deleteProfile);
 
 // protect route acting as middleware to check the authentication
 // updating profile, protectRoute so that only authenticated user can update profile

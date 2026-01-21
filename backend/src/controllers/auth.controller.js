@@ -1,4 +1,3 @@
-// Imports
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 
@@ -180,3 +179,8 @@ export const deleteProfile = async (req, res) => {
         console.log("Error in deleteProfile: ", error.message);
     }
 }
+
+export const googleAuth = (req, res) => {
+  generateToken(req.user._id, res);
+  res.redirect(process.env.FRONTEND_URL);
+};
