@@ -14,7 +14,17 @@ passport.use(
       try {
         const email = profile.emails[0].value;
 
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ googleId: profile.id });
+
+        if (!user && email) {
+          user = await User.findOne({ email });
+
+          if (user && !user.googleId) {
+            user.googleId = profile.id;
+            user.profilePic = profile.photos?.[0]?.value;
+            await user.save();
+          }
+        }
 
         if (!user) {
           const dummyPassword = await bcrypt.hash(
