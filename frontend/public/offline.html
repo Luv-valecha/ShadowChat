@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Offline | ShadowChat</title>
+
+  <style>
+    body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+
+      position: relative;
+
+      background: -webkit-linear-gradient(
+        -45deg,
+        #183850 0%,
+        #183850 25%,
+        #192C46 50%,
+        #22254C 75%,
+        #22254C 100%
+      );
+    }
+
+    .wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 50px;
+      letter-spacing: 5px;
+      line-height: 1rem;
+      text-shadow: 0 0 3px white;
+    }
+
+    h4 {
+      color: #f1f1f1;
+      font-family: Arial, sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      margin-top: 1rem;
+    }
+
+    .button {
+      display: inline-block;
+      margin: 20px 0 0;
+      padding: 15px 30px;
+      background: #22254C;
+      color: white;
+      font-family: Arial, sans-serif;
+      letter-spacing: 5px;
+      border-radius: 0.4rem;
+      text-decoration: none;
+      box-shadow: 0 0 15px #22254C;
+    }
+
+    .button:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>OFFLINE</h1>
+    <h4>Please check your internet connection</h4>
+    <a href="." class="button">RETRY</a>
+  </div>
+</body>
+</html>
