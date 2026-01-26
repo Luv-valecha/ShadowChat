@@ -70,11 +70,11 @@ const Sidebar = () => {
         <div className="border-b border-base-300 w-full p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Users className="size-6" />
-            <span className="font-medium hidden lg:block">Contacts</span>
+            <span className={`font-medium ${isExpanded ? "block" : "hidden"}`}>Contacts</span>
           </div>
 
           {/* Filter row (online toggle) */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className={`lg:flex items-center gap-2 ${isExpanded ? "justify-items-left" : "justify-items-center"}`}>
             <label className="cursor-pointer flex items-center gap-2">
               <input
                 type="checkbox"
@@ -82,9 +82,13 @@ const Sidebar = () => {
                 onChange={(e) => setShowOnlineOnly(e.target.checked)}
                 className="checkbox checkbox-sm"
               />
-              <span className="text-sm">Show online only</span>
+              <span className={`${isExpanded ? "text-sm" : "hidden"}`}>Show online only</span>
             </label>
-            <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+            <span className={`text-xs text-zinc-500 ${isExpanded ? "" : "ml-3"}`}>
+              {isExpanded
+                ? `(${onlineUsers.length - 1} online)`
+                : `(${onlineUsers.length - 1})`}
+            </span>
           </div>
 
           {/* Shared Code Room */}
@@ -149,7 +153,7 @@ const Sidebar = () => {
         </div>
 
         {/* display every user in the sidebar */}
-        <div className="overflow-y-auto w-full py-3">
+        <div className="overflow-y-auto w-full py-3 mb-20">
           {filteredUsers.map((user) => (
             <button
               key={user._id}
