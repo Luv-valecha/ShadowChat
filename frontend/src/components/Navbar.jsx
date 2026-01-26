@@ -1,10 +1,10 @@
-import { useAuthStore  } from "../store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 
 const Navbar = () => {
   // importing authUser variable and logout function from useAuthstor
-  const {logout,authUser} = useAuthStore();
+  const { logout, authUser } = useAuthStore();
 
   return (
     <header
@@ -16,13 +16,19 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <img src="ShadowChatLogo.png"/>
+                <img src="ShadowChatLogo.png" />
               </div>
               <h1 className="text-lg font-bold">ShadowChat</h1>
             </Link>
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => window.dispatchEvent(new Event("open-pwa-help"))}
+              className="btn btn-sm btn-ghost"
+            >
+              Install app
+            </button>
             <Link
               to={"/settings"}
               className={`

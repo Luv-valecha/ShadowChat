@@ -13,6 +13,7 @@ import {Toaster} from "react-hot-toast"
 import { useThemeStore } from './store/useThemeStore.js'
 import AdminPage from './pages/AdminPage.jsx'
 import CodeRoom from './components/CodeRoom.jsx'
+import PWAInstallHelp from './components/PWAInstallHelp.jsx'
 
 function App() {
   const {authUser,checkAuth,isCheckingAuth}= useAuthStore();
@@ -35,6 +36,7 @@ function App() {
   return (
     <div data-theme= {theme}>
       <Navbar/>
+      <PWAInstallHelp/>
 
       <Routes>
         <Route path='/' element={authUser ? (authUser.role==="user" ? <HomePage/> : <AdminPage/>) : <Navigate to="/login" />} />

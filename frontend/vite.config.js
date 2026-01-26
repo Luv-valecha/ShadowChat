@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
-const VERSION = "2.4.2";
+const VERSION = "2.4.5";
 
 export default defineConfig({
   plugins: [
@@ -16,14 +16,16 @@ export default defineConfig({
         "offline.html",
         "ShadowChatLogo.png"
       ],
+      devOptions: {
+        enabled: false
+      },
 
       manifest: {
         id: `/shadowchat-${VERSION}`,
-        start_url: `/?v=${VERSION}`,
+        start_url: `/`,
         name: "ShadowChat",
         short_name: "ShadowChat",
         description: "Real-time chat app",
-        start_url: "/",
         display: "standalone",
         background_color: "#1e1e1e",
         theme_color: "#1e1e1e",
@@ -47,8 +49,11 @@ export default defineConfig({
         navigateFallback: "/offline.html",
 
         navigateFallbackDenylist: [
+          /^\/$/,
+          /^\/login/,
+          /^\/signup/,
+          /^\/profile/,
           /^\/api/,
-          /^\/login$/,
           /\/assets\//
         ]
       }
